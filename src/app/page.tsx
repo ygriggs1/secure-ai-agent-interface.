@@ -26,11 +26,14 @@ export default function Home() {
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
   const [circuitBreakerActive, setCircuitBreakerActive] = useState(false);
   const [allPaused, setAllPaused] = useState(false);
-  const [clock, setClock] = useState(new Date());
+  const [clock, setClock] = useState<Date | null>(null);
   const [jwtTtl, setJwtTtl] = useState(INITIAL_JWT_TTL);
   const [sessionId] = useState(() => `sess-${Math.random().toString(36).slice(2, 10)}`);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    setClock(new Date());
     const interval = setInterval(() => {
       setClock(new Date());
       setJwtTtl((t) => Math.max(0, t - 1));
@@ -82,7 +85,7 @@ export default function Home() {
 
           <div className="flex items-center gap-1.5 text-xs text-gray-500 font-mono">
             <Timer className="w-3.5 h-3.5 text-gray-400" />
-            {formatTime(clock)}
+            {mounted && clock ? formatTime(clock) : '--:--:--'}
           </div>
 
           <div className="flex items-center gap-1.5 text-xs font-medium text-securityGreen">
@@ -93,11 +96,11 @@ export default function Home() {
           <div className="flex items-center gap-3 text-xs text-gray-500 border border-gray-200 rounded-lg px-3 py-1.5 bg-gray-50">
             <div className="flex items-center gap-1">
               <Key className="w-3 h-3 text-gray-400" />
-              <span className="font-mono">{sessionId}</span>
+              <span className="font-mono">{mounted ? sessionId : '---'}</span>
             </div>
             <div className="flex items-center gap-1">
               <span className="text-gray-400">JWT:</span>
-              <span className={`font-mono font-semibold ${jwtColor}`}>{formatJwt(jwtTtl)}</span>
+              <span className={`font-mono font-semibold ${jwtColor}`}>{mounted ? formatJwt(jwtTtl) : '--:--'}</span>
             </div>
           </div>
 

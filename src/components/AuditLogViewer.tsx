@@ -1,5 +1,6 @@
 'use client';
 
+import { Fragment } from 'react';
 import { AuditLogEntry } from '@/types/agent';
 import { cn } from '@/lib/utils';
 import {
@@ -172,16 +173,15 @@ export default function AuditLogViewer({ logs, agentNames }: AuditLogViewerProps
               </tr>
             )}
             {paginated.map((log) => (
-              <>
+              <Fragment key={log.id}>
                 <tr
-                  key={log.id}
                   className={cn(
                     'border-b border-gray-50 hover:bg-gray-50 cursor-pointer transition-colors',
                     expandedId === log.id && 'bg-gray-50',
                   )}
                   onClick={() => toggleExpand(log.id)}
                 >
-                  <td className="px-3 py-2 text-gray-400 whitespace-nowrap">{formatRelativeTime(log.timestamp)}</td>
+                  <td suppressHydrationWarning className="px-3 py-2 text-gray-400 whitespace-nowrap">{formatRelativeTime(log.timestamp)}</td>
                   <td className="px-3 py-2 font-medium text-gray-700 whitespace-nowrap">{agentNames[log.agentId] || log.agentId}</td>
                   <td className="px-3 py-2 font-mono text-gray-600 max-w-24 truncate">{log.action}</td>
                   <td className="px-3 py-2">
@@ -226,14 +226,14 @@ export default function AuditLogViewer({ logs, agentNames }: AuditLogViewerProps
                           <span className="font-medium text-gray-500">Output: </span>
                           <code className="bg-gray-100 px-1.5 py-0.5 rounded font-mono text-xs text-gray-700 break-all">{log.output}</code>
                         </div>
-                        <div className="text-gray-400 text-xs">
+                        <div suppressHydrationWarning className="text-gray-400 text-xs">
                           {new Date(log.timestamp).toLocaleString()} · {log.id}
                         </div>
                       </div>
                     </td>
                   </tr>
                 )}
-              </>
+              </Fragment>
             ))}
           </tbody>
         </table>

@@ -105,7 +105,7 @@ export default function AgentStatus({ agent, isSelected, onSelect, circuitBreake
       {agent.lastAction && (
         <div className="flex items-center gap-1.5 text-xs text-gray-600">
           <Clock className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
-          <span className="truncate text-gray-400">
+          <span suppressHydrationWarning className="truncate text-gray-400">
             Last: {formatRelativeTime(agent.lastAction.timestamp)}
           </span>
         </div>
